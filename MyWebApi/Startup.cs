@@ -26,11 +26,14 @@ namespace MyWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddRazorPages();
             services.AddDbContext<AppDbContext>(options =>
         options.UseSqlite("Data Source=products.db"));
 
             services.AddScoped<IProductRepository, ProductRepository>(); // 註冊資料存取層
+
+            //註冊 Razor Pages
+            services.AddRazorPages();
+
             services.AddControllers();
         }
 
@@ -57,6 +60,7 @@ namespace MyWebApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }
