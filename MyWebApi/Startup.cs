@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MyWebApi.Data;
 using MyWebApi.Repositories;
+using MyWebApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace MyWebApi
 
             //µù¥U Razor Pages
             services.AddRazorPages();
+            //µù¥U ProductService
+            services.AddScoped<ProductService>(); 
 
             services.AddControllers();
 

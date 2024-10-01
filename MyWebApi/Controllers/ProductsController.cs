@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyWebApi.Data;
 using MyWebApi.Models;
+using MyWebApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,25 +14,44 @@ namespace MyWebApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        //====================================================================
+        //更新 ProductsController，使其依賴於 ProductService 而不是 AppDbContext
+        //====================================================================
+        //依賴 AppDbContext 寫法
+        //private readonly AppDbContext _context;
 
-        public ProductsController(AppDbContext context)
+        //public ProductsController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
+
+        //依賴 ProductsController 寫法
+        private readonly ProductService _productService;
+
+        public ProductsController(ProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         // GET: api/products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            //依賴 AppDbContext 寫法
+            //return await _context.Products.ToListAsync();
+            return Ok(await _productService.GetAllProductsAsync());
         }
 
         // GET: api/products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            //依賴 AppDbContext 寫法
+            //var product = await _context.Products.FindAsync(id);
+            
+            //依賴 ProductsController 寫法
+            var product = await _productService.GetProductByIdAsync(id);
+            
             if (product == null)
             {
                 return NotFound();
@@ -43,8 +63,13 @@ namespace MyWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            //依賴 AppDbContext 寫法
+            //_context.Products.Add(product);
+            //await _context.SaveChangesAsync();
+
+            //依賴 ProductsController 寫法
+            await _productService.AddProductAsync(product);
+            
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
@@ -52,25 +77,27 @@ namespace MyWebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
+            if (id != product.Id) return BadRequest();
 
-            _context.Entry(product).State = EntityState.Modified;
+            //依賴 AppDbContext 寫法
+            //_context.Entry(product).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!ProductExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    throw;
+            //}
+
+            //依賴 ProductsController 寫法
+            await _productService.UpdateProductAsync(product);
+
             return NoContent();
         }
 
@@ -78,20 +105,25 @@ namespace MyWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            //依賴 AppDbContext 寫法
+            //var product = await _context.Products.FindAsync(id);
+            //if (product == null)
+            //{
+            //    return NotFound();
+            //}
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            //_context.Products.Remove(product);
+            //await _context.SaveChangesAsync();
+
+            //依賴 ProductsController 寫法
+            await _productService.DeleteProductAsync(id);
+
             return NoContent();
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        //private bool ProductExists(int id)
+        //{
+        //    return _context.Products.Any(e => e.Id == id);
+        //}
     }
 }
