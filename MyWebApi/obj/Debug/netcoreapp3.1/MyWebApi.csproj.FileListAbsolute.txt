@@ -76,3 +76,8 @@ D:\MyWebApi\MyWebApi\obj\Debug\netcoreapp3.1\MyWebApi.csproj.CopyComplete
 D:\MyWebApi\MyWebApi\obj\Debug\netcoreapp3.1\MyWebApi.dll
 D:\MyWebApi\MyWebApi\obj\Debug\netcoreapp3.1\MyWebApi.pdb
 D:\MyWebApi\MyWebApi\obj\Debug\netcoreapp3.1\MyWebApi.genruntimeconfig.cache
+D:\MyWebApi\MyWebApi\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+D:\MyWebApi\MyWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+D:\MyWebApi\MyWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\MyWebApi\MyWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\MyWebApi\MyWebApi\obj\Debug\netcoreapp3.1\MyWebApi.MvcApplicationPartsAssemblyInfo.cs

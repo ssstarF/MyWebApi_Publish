@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using MyWebApi.Data;
 using MyWebApi.Repositories;
 using System;
@@ -35,6 +36,12 @@ namespace MyWebApi
             services.AddRazorPages();
 
             services.AddControllers();
+
+            //新增 Swagger服務
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +62,16 @@ namespace MyWebApi
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //啟用 Swagger
+            app.UseSwagger();
+
+            //設定 Swagger UI
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty; // 設定為根路徑
+            });
 
             app.UseAuthorization();
 
